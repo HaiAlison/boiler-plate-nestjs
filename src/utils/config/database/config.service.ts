@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const config: ConfigService = new ConfigService();
 const dbConfig = {
+  name: 'primary_database',
   type: 'postgres' as const,
   host: config.get<string>('DATABASE_HOST'),
   port: config.get<number>('DATABASE_PORT'),

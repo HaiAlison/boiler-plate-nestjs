@@ -7,7 +7,8 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-
+ENV DATABASE_HOST=host.docker.internal
+ENV MONGO_DB_HOST=host.docker.internal
 RUN npm run build
 
 EXPOSE 3000

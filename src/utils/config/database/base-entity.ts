@@ -1,8 +1,11 @@
 import {
   BaseEntity,
+  Connection,
   CreateDateColumn,
   DeleteDateColumn,
+  getConnection,
   PrimaryGeneratedColumn,
+  Repository,
   UpdateDateColumn,
 } from 'typeorm';
 
