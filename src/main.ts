@@ -45,7 +45,7 @@ async function bootstrap() {
     );
     console.log(
       '\x1b[36m[SWAGGER]: ',
-      config.get<string>('BASE_URL') + config.get('PORT')+'/swagger',
+      config.get<string>('BASE_URL') + config.get('PORT') + '/swagger',
     );
   });
 }
