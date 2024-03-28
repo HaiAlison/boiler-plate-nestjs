@@ -9,6 +9,7 @@ import {
 import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { Notification } from './notification.entity';
 import * as bcrypt from 'bcrypt';
+import { Sender } from './sender.entity';
 @Entity()
 @Unique(['code', 'source'])
 export class User extends BaseTimeStampEntity {
@@ -49,6 +50,12 @@ export class User extends BaseTimeStampEntity {
 
   @OneToMany(() => Notification, (notifications) => notifications.user)
   notifications: Notification[];
+
+  @OneToMany(() => Sender, (sender) => sender.user)
+  senders: Sender[];
+
+  @Column({ nullable: true })
+  last_login: Date;
 
   constructor(user?: Partial<User>) {
     super();

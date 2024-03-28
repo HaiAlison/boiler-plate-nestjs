@@ -14,6 +14,8 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
 import { MailModule } from './mail/mail.module';
+import { SenderModule } from './sender/sender.module';
+import { RedisStorageModule } from './redis-storage/redis-storage.module';
 
 @Module({
   imports: [
@@ -40,10 +42,13 @@ import { MailModule } from './mail/mail.module';
         },
       },
     ),
+    ScheduleModule.forRoot(),
+    RedisStorageModule,
     UserModule,
     DynamicConnectionModule,
     AuthModule,
     MailModule,
+    SenderModule,
   ],
   controllers: [AppController],
   providers: [

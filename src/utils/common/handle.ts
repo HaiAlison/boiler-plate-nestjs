@@ -9,7 +9,7 @@ import {
 import { DEFAULT_LIMIT_NUMBER, DEFAULT_PAGE_NUMBER } from './constant';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { PaginationResponse } from './interface';
-import axios, {AxiosError, Method} from 'axios';
+import axios, { AxiosError, Method } from 'axios';
 import axiosRetry from 'axios-retry';
 import { pickBy } from 'lodash';
 
@@ -39,6 +39,15 @@ export const handleError = (e) => {
         cause: new Error(
           e.message.match(/".*"/)[0]?.replace(/"/g, '') + ' not found',
         ),
+      },
+    );
+  }
+  if (new RegExp('already exists').test(e.detail)) {
+    throw new HttpException(
+      `Đã tồn tại ${e.detail.match(/Key \(.*?\)=\((.*?),/)[1]} !`,
+      HttpStatus.BAD_REQUEST,
+      {
+        cause: new Error(e.detail),
       },
     );
   }
