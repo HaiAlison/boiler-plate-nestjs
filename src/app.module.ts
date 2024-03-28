@@ -8,12 +8,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { typeOrmMapConfig } from './utils/config/database/map.data-source';
+import { MapModule } from './map/map.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: ['.env'], isGlobal: true }),
     ConfigModule,
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
+    TypeOrmModule.forRootAsync(typeOrmMapConfig),
+    MapModule,
     ScheduleModule.forRoot(),
     // ...connections.map((connection) => {
     //   return TypeOrmModule.forRoot(connection);
