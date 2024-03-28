@@ -26,8 +26,8 @@ const dbConfig = {
     ssl:
       config.get('SSL_MODE', false) == 'true'
         ? {
-            rejectUnauthorized: !config.get<boolean>('SSL_MODE', false),
-          }
+          rejectUnauthorized: !config.get<boolean>('SSL_MODE', false),
+        }
         : null,
   },
   cli: {
