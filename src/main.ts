@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { isMainThread } from 'worker_threads';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { Worker, threadId } = require('worker_threads');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,6 +42,13 @@ async function bootstrap() {
   });
 
   await app.listen(config.get<number>('PORT'), () => {
+    console.log(
+      `Number of threads running: ${threadId}, main: ${isMainThread}`,
+    );
+    console.log(
+      `Number of threads in the thread pool: ${process.env.UV_THREADPOOL_SIZE}`,
+    );
+
     console.log(
       '\x1b[36m[WEB]: ',
       config.get<string>('BASE_URL') + config.get('PORT'),
