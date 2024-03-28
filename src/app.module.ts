@@ -6,7 +6,6 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { typeOrmAsyncConfig } from './utils/config/database/config.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
-import { connections } from './utils/config/database/datasources';
 import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection.module';
 import { ScheduleModule } from '@nestjs/schedule';
 
@@ -26,7 +25,7 @@ import { ScheduleModule } from '@nestjs/schedule';
         connectionFactory: (connection) => {
           console.log('Starting MongoDB connection...'); // Log at the start
           connection.on('connected', () => {
-            console.log('Connected to MongoDB');
+            // console.log('Connected to MongoDB');
           });
           connection._events.connected();
           return connection;

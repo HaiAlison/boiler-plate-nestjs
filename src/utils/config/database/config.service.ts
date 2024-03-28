@@ -9,7 +9,7 @@ import { DataSource } from 'typeorm';
 require('dotenv').config();
 
 const config: ConfigService = new ConfigService();
-const dbConfig = {
+export const dbConfig = {
   name: 'primary_database',
   type: 'postgres' as const,
   host: config.get<string>('DATABASE_HOST'),

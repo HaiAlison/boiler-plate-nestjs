@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import * as users from '../utils/json-data/users.json';
-import { sendPost } from '../utils/common/handle';
-import { METHOD } from '../utils/common/enum';
 import { DynamicConnectionService } from '../dynamic-connection/dynamic-connection.service';
-import { DataSource, EntityManager } from 'typeorm';
-import { connection } from 'mongoose';
-import { Cron } from '@nestjs/schedule';
+import { DataSource } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { handleError } from '../utils/common/handle';
 
 @Injectable()
 export class UserService {
-  constructor(private dynamicDbService: DynamicConnectionService) {}
+  constructor(
+    private dynamicDbService: DynamicConnectionService,
+    @InjectDataSource()
+    private dataSource: DataSource,
+  ) {}
   i = 0;
   sleep(ms) {
     return new Promise((resolve) => {
@@ -18,10 +20,17 @@ export class UserService {
     });
   }
 
-  async getUsers(dbName) {
-    const connection = await this.dynamicDbService.createConnection(dbName);
-    const repository = await connection.manager.getRepository(User);
-    return repository.find();
+  async getUsers(dbName?) {
+    try {
+      let connection = this.dataSource;
+      if (dbName) {
+        connection = await this.dynamicDbService.createConnection(dbName);
+      }
+      const repository = await connection.manager.getRepository(User);
+      return repository.find();
+    } catch (e) {
+      return handleError(e);
+    }
   }
 
   async createUser(dto, connection: DataSource) {

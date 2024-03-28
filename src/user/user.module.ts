@@ -7,5 +7,6 @@ import { DynamicConnectionModule } from '../dynamic-connection/dynamic-connectio
   imports: [DynamicConnectionModule],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

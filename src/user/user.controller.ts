@@ -9,8 +9,12 @@ export class UserController {
   createUser(@Body() dto) {
     // return this.userService.createUser(dto);
   }
+  @Get()
+  getUsers() {
+    return this.userService.getUsers();
+  }
   @Get(':dbName')
-  getUsers(@Param('dbName') dbName: string) {
+  getUsersByDBName(@Param('dbName') dbName: string) {
     return this.userService.getUsers(dbName);
   }
 
