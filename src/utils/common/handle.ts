@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import {
   DataSource,
+  DeepPartial,
   FindManyOptions,
   Repository,
   SelectQueryBuilder,
@@ -8,7 +9,7 @@ import {
 import { DEFAULT_LIMIT_NUMBER, DEFAULT_PAGE_NUMBER } from './constant';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { PaginationResponse } from './interface';
-import axios, { Method } from 'axios';
+import axios, {AxiosError, Method} from 'axios';
 import axiosRetry from 'axios-retry';
 import { pickBy } from 'lodash';
 
@@ -23,6 +24,11 @@ export const handleError = (e) => {
         ),
       },
     );
+  if (e instanceof AxiosError) {
+    throw new HttpException(e.response?.data || e, HttpStatus.BAD_REQUEST, {
+      cause: new Error(e.response?.data || e),
+    });
+  }
   if (new RegExp('violates not-null constraint').test(e.message)) {
     throw new HttpException(
       'column ' +
@@ -101,7 +107,7 @@ export const pagination = async (
       ...findManyOptions,
       take: limit,
       skip,
-      order:{}
+      order: {},
     });
   }
 
@@ -142,7 +148,12 @@ export const parseTextToArray = (text, toNumber = false) => {
 
 axiosRetry(axios, { retries: 3 });
 
-export const sendPost = async (method: Method, url, data, headers = {}) => {
+export const callAxios = async (
+  method: Method,
+  url,
+  data = {},
+  headers = {},
+) => {
   try {
     return await axios.request({
       url,
@@ -151,7 +162,7 @@ export const sendPost = async (method: Method, url, data, headers = {}) => {
       headers,
     });
   } catch (e) {
-    console.error(e.message);
+    return handleError(e);
   }
 };
 
@@ -182,43 +193,36 @@ export const cleanObject = (originalObject = {}) => {
   return { ...validProperties, ...validArrays, ...validObjects };
 };
 
-export const generateCode = async (
-  prefix: string | number,
-  entityName: string,
-  dataSource: DataSource,
-  conditions,
-  maxLength: number,
-  field = 'code',
-) => {
-  const columns = [],
-    params = [];
-  Object.entries(conditions).forEach(([key, val], index) => {
-    index += 1;
-    columns.push(`${key} = $${index} `);
-    params.push(val);
-  });
-
-  const result = await dataSource.query(
-    `select MAX(${field}) as max_code from ${entityName} where ${columns.join(
-      'and ',
-    )}`,
-    params,
-  );
-
-  let isMatched = true,
-    code,
-    num = parseInt(result[0].max_code?.substring((prefix + '').length) || 0);
+export const generateCodeBaseOnSequence = async (
+  table_name,
+  prefix,
+  num_digits,
+  transaction: DeepPartial<any>,
+): Promise<string> => {
+  let code;
   do {
-    code = prefix + (num += 1).toString().padStart(maxLength, '0');
-    isMatched = !!(
-      await dataSource.query(
-        `select count(*)::int from ${entityName} where ${columns.join(
-          'and ',
-        )} and ${field} = $${params.length + 1}`,
-        [...params, code],
-      )
-    )[0].count;
-  } while (isMatched);
+    const [sequence_code] = await transaction.query(
+      `SELECT generate_code($1,$2,$3) as code;`,
+      [prefix, num_digits, table_name],
+    );
+    const [max_code] = await transaction.query(
+      `select max(code) as code from public.${table_name} where code ilike $1`,
+      ['%' + prefix + '%'],
+    );
+    if (
+      sequence_code.code &&
+      Number(sequence_code.code.match(/\d+/g).join('')) <=
+        Number(max_code.code?.match(/\d+/g).join(''))
+    ) {
+      await transaction.query(
+        `select max(code) as code from public.${table_name} where code ilike $1`,
+        ['%' + prefix + '%'],
+      );
+    } else {
+      code = sequence_code.code;
+    }
+  } while (!code);
+  console.log(code);
   return code;
 };
 

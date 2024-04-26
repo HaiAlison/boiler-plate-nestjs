@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { sendPost } from '../../common/handle';
+import { callAxios } from '../../common/handle';
 const config: ConfigService = new ConfigService();
 
 export const connections: TypeOrmModuleOptions[] = [
