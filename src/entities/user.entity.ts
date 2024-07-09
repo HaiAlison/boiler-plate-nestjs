@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { Notification } from './notification.entity';
+import { Role } from './role.entity';
 
 @Entity()
 // @Unique(['code', 'source'])
@@ -19,4 +20,7 @@ export class User extends BaseTimeStampEntity {
 
   @OneToMany(() => Notification, (notifications) => notifications.user)
   notifications: Notification[];
+
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 }

@@ -27,3 +27,8 @@ export enum METHOD {
   'unlink' = 'unlink',
   'UNLINK' = 'UNLINK',
 }
+
+export enum ROLE_TYPES {
+  EMPLOYEE = 'employee',
+  CUSTOMER = 'customer',
+}
