@@ -13,6 +13,25 @@ export class UserController {
   getUsers() {
     return this.userService.getUsers();
   }
+
+  @Get('call')
+  call() {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const socket = require('socket.io-client')('ws://localhost:3000');
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+      socket.emit('ping', 'Hello from client');
+    });
+
+    socket.on('message', (data) => {
+      console.log('Received:', data);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+  }
   @Get(':dbName')
   getUsersByDBName(@Param('dbName') dbName: string) {
     return this.userService.getUsers(dbName);

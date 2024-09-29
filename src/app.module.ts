@@ -10,6 +10,7 @@ import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection
 import { ScheduleModule } from '@nestjs/schedule';
 import { typeOrmMapConfig } from './utils/config/database/map.data-source';
 import { MapModule } from './map/map.module';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [
@@ -40,6 +41,6 @@ import { MapModule } from './map/map.module';
     DynamicConnectionModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}
