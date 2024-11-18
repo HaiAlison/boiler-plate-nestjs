@@ -11,10 +11,13 @@ export interface JwtPayload {
   tenant_id: string;
   client_id: string;
   is_admin: boolean;
-  user_id: string;
+  id: string;
   user_full_name: string;
   scopes: string;
   groups: [];
   iat: number;
   exp: number;
+}
+export interface IJwtToken {
+  accessToken: string;
 }
