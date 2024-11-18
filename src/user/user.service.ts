@@ -68,7 +68,7 @@ export class UserService {
         );
         const x = await transactionalEntityManager.upsert(
           User,
-          { code, name, address, source },
+          { code, address, source },
           ['code', 'source'],
         );
         return { success: true, message: 'create', id: x.identifiers[0].id };
@@ -111,6 +111,30 @@ export class UserService {
     }
   }
 
+  async continueWithGoogle(dto: any) {
+    try {
+      const { name, email } = dto;
+      let user = await User.createQueryBuilder('user')
+        .where('user.email = :email', { email: dto.email })
+        .andWhere('user.googleProviderId = :providerId', {
+          providerId: dto.googleProviderId,
+        })
+        .getOne();
+      if (!user) {
+        user = await this.createUser({
+          source: 'farm',
+          name,
+          email,
+          googleProviderId: dto.googleProviderId,
+        });
+      }
+      const accessToken = this.jwtService.sign({ id: user.id });
+      return { accessToken };
+    } catch (e) {
+      throw handleError(e);
+    }
+  }
+
   async createUserMultipleDatabase(dto, connection: DataSource) {
     const { code, name, address, dbName } = dto;
     console.log('count ', ++this.i);
@@ -128,7 +152,6 @@ export class UserService {
         user = transactionalEntityManager.create(User, {
           code,
           source: 'farm',
-          name,
           address,
         });
       }

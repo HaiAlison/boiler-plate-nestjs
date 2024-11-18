@@ -17,7 +17,7 @@ export class DynamicConnectionService {
     try {
       const { database, port, name, host, password, username, type } = config;
       const query = this.dataSource.manager;
-      const db = query.create<Database>(Database, {
+      const db = query.create(Database, {
         database,
         port,
         name,

@@ -33,4 +33,8 @@ export class UserController {
   continueWithFacebook(@Body() dto) {
     return this.userService.continueWithFacebook(dto);
   }
+  @Post('google-login')
+  continueWithGoogle(@Body() dto: any) {
+    return this.userService.continueWithGoogle(dto);
+  }
 }

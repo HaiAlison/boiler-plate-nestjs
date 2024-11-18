@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmAsyncConfig } from './utils/config/database/config.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
@@ -10,6 +10,9 @@ import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection
 import { ScheduleModule } from '@nestjs/schedule';
 import { typeOrmMapConfig } from './utils/config/database/map.data-source';
 import { MapModule } from './map/map.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
 
 @Module({
   imports: [
@@ -38,8 +41,15 @@ import { MapModule } from './map/map.module';
     ),
     UserModule,
     DynamicConnectionModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}

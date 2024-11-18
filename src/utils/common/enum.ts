@@ -27,3 +27,9 @@ export enum METHOD {
   'unlink' = 'unlink',
   'UNLINK' = 'UNLINK',
 }
+
+export enum ACCESS_PROCESS {
+  IN_PROGRESS = 'inProgress',
+  FAILED = 'failed',
+  DONE = 'done',
+}

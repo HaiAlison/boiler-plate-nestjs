@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Unique,
+} from 'typeorm';
 import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { Notification } from './notification.entity';
 import * as bcrypt from 'bcrypt';
@@ -9,7 +16,10 @@ export class User extends BaseTimeStampEntity {
   code: string;
 
   @Column({ nullable: true })
-  name: string;
+  first_name: string;
+
+  @Column({ nullable: true })
+  last_name: string;
 
   @Column({ nullable: true })
   address: string;
@@ -18,7 +28,15 @@ export class User extends BaseTimeStampEntity {
   source: string;
 
   @Column({ nullable: true, unique: true })
-  fbProviderId: string;
+  @JoinColumn({ name: 'fb_provider_id' })
+  fb_provider_id: string;
+
+  @Column({ nullable: true, unique: true })
+  @JoinColumn({ name: 'google_provider_id' })
+  google_provider_id: string;
+
+  @Column('varchar', { nullable: true })
+  refresh_token: string;
 
   @Column({ nullable: true })
   email: string;

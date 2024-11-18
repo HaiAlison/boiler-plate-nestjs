@@ -37,6 +37,11 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   fbProviderId?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  googleProviderId?: string;
 }
 export class FacebookLoginDto {
   @ApiProperty()
