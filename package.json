@@ -26,6 +26,7 @@
     "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
     "@nestjs/cache-manager": "^2.0.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
@@ -37,6 +38,7 @@
     "@nestjs/schedule": "^3.0.3",
     "@nestjs/swagger": "^7.1.1",
     "@nestjs/typeorm": "^10.0.2",
+    "@types/nodemailer": "^6.4.16",
     "@types/passport-google-oauth20": "^2.0.16",
     "axios": "^1.4.0",
     "axios-retry": "^3.5.1",
@@ -44,10 +46,11 @@
     "cache-manager": "^5.2.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "googleapis": "^144.0.0",
+    "googleapis": "^105.0.0",
     "lodash": "^4.17.21",
     "mongoose": "^7.4.3",
     "node-vault": "^0.10.2",
+    "nodemailer": "^6.9.16",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-google-oauth20": "^2.0.0",

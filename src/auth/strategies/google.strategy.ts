@@ -22,9 +22,10 @@ export class GoogleOauthStrategy extends PassportStrategy(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_REDIRECT_URI + '/auth/google/callback',
-      scope: ['email', 'profile'],
+      scope: ['email', 'profile', 'https://mail.google.com/'],
     });
   }
+
   async validate(
     _accessToken: string,
     _refreshToken: string,

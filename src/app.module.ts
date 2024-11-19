@@ -13,6 +13,7 @@ import { MapModule } from './map/map.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
     UserModule,
     DynamicConnectionModule,
     AuthModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [
