@@ -17,6 +17,9 @@ export class AuthService {
     let userExists = await this.findUserByEmail(user.email);
     if (!userExists) {
       userExists = await this.registerUser(user);
+    } else {
+      userExists.refresh_token = user.refresh_token;
+      await userExists.save();
     }
     return this.generateJwt({
       sub: userExists.google_provider_id,
