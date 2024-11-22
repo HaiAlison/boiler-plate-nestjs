@@ -1,4 +1,5 @@
 import { registerDecorator, ValidationArguments } from 'class-validator';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export function AsIntDefaultValue(defaultValue?: number) {
   return (object: object, propertyName: string) => {
@@ -27,3 +28,10 @@ export function AsIntDefaultValue(defaultValue?: number) {
     });
   };
 }
+
+export const GetUser = createParamDecorator(
+  (data: string, context: ExecutionContext) => {
+    const user = context.getArgs();
+    return user[0]?.user?.[data || 'id'] ?? null; //get data or id
+  },
+);
