@@ -10,6 +10,8 @@ import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { Notification } from './notification.entity';
 import * as bcrypt from 'bcrypt';
 import { Sender } from './sender.entity';
+import { Upload } from './Upload.entity';
+
 @Entity()
 @Unique(['code', 'source'])
 export class User extends BaseTimeStampEntity {
@@ -54,6 +56,9 @@ export class User extends BaseTimeStampEntity {
   @OneToMany(() => Sender, (sender) => sender.user)
   senders: Sender[];
 
+  @OneToMany(() => Upload, (file) => file.user)
+  files: Upload[];
+
   @Column({ nullable: true })
   last_login: Date;
 
@@ -61,6 +66,7 @@ export class User extends BaseTimeStampEntity {
     super();
     Object.assign(this, user);
   }
+
   public async validatePassword(
     pwd: string,
     salt: string,

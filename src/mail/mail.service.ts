@@ -54,7 +54,7 @@ export class MailService {
           raw: encodedMessage,
         },
       });
-      console.log('Mail sent successfully', mailOptions.to);
+      console.log('Mail sent successfully', mailOptions);
       return result.status >= 200 && result.status < 300
         ? { message: 'Mail sent successfully' }
         : new BadRequestException('Mail not sent');
@@ -63,7 +63,7 @@ export class MailService {
     }
   }
 
-  async scheduleEmail(dto: CronJobDto, account?: any) {
+  async scheduleEmail(dto: CronJobDto, user_id?: string) {
     const { hour, minute } = dto;
 
     await this.redisStorage.set('cron_time', `${hour}_${minute}`);
@@ -78,7 +78,7 @@ export class MailService {
       'Asia/Ho_Chi_Minh',
     );
     try {
-      this.schedulerRegistry.addCronJob(`report`, job);
+      this.schedulerRegistry.addCronJob(`mail_schedule_${user_id}`, job);
     } catch (e) {}
     console.log(
       `job report added for each ${hour}:${minute

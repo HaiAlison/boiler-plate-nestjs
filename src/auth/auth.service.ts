@@ -15,6 +15,7 @@ export class AuthService {
     const user = await this.findUserByEmail(payload.email);
     return !!user;
   }
+
   generateJwt(payload: any) {
     return this.jwtService.sign(payload, { secret: process.env.JWT_SECRET });
   }
@@ -27,18 +28,19 @@ export class AuthService {
     if (!userExists) {
       userExists = await this.registerUser(user);
     } else {
-      userExists.refresh_token = user.refresh_token;
+      userExists.refresh_token = user.refresh_token || userExists.refresh_token;
       userExists.last_login = new Date();
       await userExists.save();
       await this.redisStorage.set(
         userExists.id + '_oauth2Client',
-        user.refresh_token,
+        user.refresh_token || userExists.refresh_token,
       );
     }
     return this.generateJwt({
       id: userExists.id,
       sub: userExists.google_provider_id,
       email: userExists.email,
+      avatar: userExists.avatar,
       expires_in:
         new Date(userExists.last_login).getTime() + 7 * 24 * 60 * 60 * 1000,
     });

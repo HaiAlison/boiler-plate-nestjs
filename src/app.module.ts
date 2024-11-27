@@ -16,6 +16,7 @@ import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
 import { MailModule } from './mail/mail.module';
 import { SenderModule } from './sender/sender.module';
 import { RedisStorageModule } from './redis-storage/redis-storage.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { RedisStorageModule } from './redis-storage/redis-storage.module';
     AuthModule,
     MailModule,
     SenderModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [

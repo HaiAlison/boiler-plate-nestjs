@@ -6,6 +6,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as passport from 'passport';
 import * as bodyParser from 'body-parser';
 import { json, urlencoded } from 'express';
+import * as express from 'express';
+import * as path from 'node:path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -49,6 +51,10 @@ async function bootstrap() {
     },
   });
   app.use(passport.initialize());
+  app.use(
+    process.env.IMAGE_PUBLIC_URL as string,
+    express.static(path.resolve('uploads')),
+  );
 
   await app.listen(config.get<number>('PORT'), () => {
     console.log(
