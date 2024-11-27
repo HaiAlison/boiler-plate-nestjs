@@ -22,7 +22,12 @@ export class GoogleOauthStrategy extends PassportStrategy(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_REDIRECT_URI + '/auth/google/callback',
-      scope: ['email', 'profile', 'https://mail.google.com/'],
+      scope: [
+        'email',
+        'profile',
+        'https://mail.google.com/',
+        'https://www.googleapis.com/auth/contacts',
+      ],
     });
   }
 

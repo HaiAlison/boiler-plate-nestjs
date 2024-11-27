@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class SendMailDto {
   @ApiProperty()
@@ -8,9 +14,9 @@ export class SendMailDto {
   user_id: string;
 
   @ApiProperty()
-  @IsEmail()
-  @IsNotEmpty()
-  to: string;
+  @IsEmail({}, { each: true })
+  @ArrayMinSize(1)
+  to: string[];
 
   @ApiProperty()
   @IsString()

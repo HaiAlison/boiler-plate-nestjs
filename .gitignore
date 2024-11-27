@@ -36,3 +36,4 @@ lerna-debug.log*
 
 /.env
 /src/utils/json-data/google-api-secret.json
+/uploads/

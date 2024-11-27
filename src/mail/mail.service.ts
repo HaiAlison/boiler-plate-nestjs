@@ -3,9 +3,18 @@ import { google } from 'googleapis';
 import { User } from '../entities/user.entity';
 import { SendMailDto } from './dto/send-mail.dto';
 import { handleError } from '../utils/common/handle';
+import { CronJobDto } from './dto/cron-job.dto';
+import { CronJob } from 'cron';
+import { RedisStorageService } from '../redis-storage/redis-storage.service';
+import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Injectable()
 export class MailService {
+  constructor(
+    private redisStorage: RedisStorageService,
+    private schedulerRegistry: SchedulerRegistry,
+  ) {}
+
   async sendMail(dto: SendMailDto) {
     try {
       const user = await User.findOne({ where: { id: dto.user_id } });
@@ -20,7 +29,7 @@ export class MailService {
       });
       const mailOptions = {
         from: user.email,
-        to: dto.to,
+        to: dto.to.join(', '),
         subject: dto.subject,
         text: dto.text,
       };
@@ -45,11 +54,37 @@ export class MailService {
           raw: encodedMessage,
         },
       });
+      console.log('Mail sent successfully', mailOptions);
       return result.status >= 200 && result.status < 300
         ? { message: 'Mail sent successfully' }
         : new BadRequestException('Mail not sent');
     } catch (error) {
       handleError(error);
     }
+  }
+
+  async scheduleEmail(dto: CronJobDto, user_id?: string) {
+    const { hour, minute } = dto;
+
+    await this.redisStorage.set('cron_time', `${hour}_${minute}`);
+    const job = new CronJob(
+      `${minute} ${hour} * * *`,
+      async () => {
+        console.log(`job report running at ${hour}:${minute}!`);
+        //TODO send email
+      },
+      null,
+      null,
+      'Asia/Ho_Chi_Minh',
+    );
+    try {
+      this.schedulerRegistry.addCronJob(`mail_schedule_${user_id}`, job);
+    } catch (e) {}
+    console.log(
+      `job report added for each ${hour}:${minute
+        .toString()
+        .padStart(2, '0')} !`,
+    );
+    job.start();
   }
 }
