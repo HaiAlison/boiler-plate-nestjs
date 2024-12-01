@@ -7,6 +7,7 @@ import { CronJobDto } from './dto/cron-job.dto';
 import { CronJob } from 'cron';
 import { RedisStorageService } from '../redis-storage/redis-storage.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { Logging } from '../entities/logging.entity';
 
 @Injectable()
 export class MailService {
@@ -30,12 +31,14 @@ export class MailService {
       const mailOptions = {
         from: user.email,
         to: dto.to.join(', '),
+        cc: dto.cc.join(', '),
         subject: dto.subject,
         text: dto.text,
       };
       const raw = [
         `From: ${mailOptions.from}`,
         `To: ${mailOptions.to}`,
+        `Cc: ${mailOptions.cc}`,
         'Content-type: text/html;charset=iso-8859-1',
         'MIME-Version: 1.0',
         `Subject: =?UTF-8?B?${Buffer.from(mailOptions.subject).toString(
@@ -55,6 +58,13 @@ export class MailService {
         },
       });
       console.log('Mail sent successfully', mailOptions);
+      await Logging.save(
+        Logging.create({
+          body: mailOptions.text,
+          subject: mailOptions.subject,
+          recipients: [...new Set([...dto.to, ...dto.cc])],
+        }),
+      );
       return result.status >= 200 && result.status < 300
         ? { message: 'Mail sent successfully' }
         : new BadRequestException('Mail not sent');

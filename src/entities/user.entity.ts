@@ -11,6 +11,7 @@ import { Notification } from './notification.entity';
 import * as bcrypt from 'bcrypt';
 import { Sender } from './sender.entity';
 import { Upload } from './Upload.entity';
+import { Logging } from './logging.entity';
 
 @Entity()
 @Unique(['code', 'source'])
@@ -58,6 +59,9 @@ export class User extends BaseTimeStampEntity {
 
   @OneToMany(() => Upload, (file) => file.user)
   files: Upload[];
+
+  @OneToMany(() => Logging, (log) => log.user)
+  loggings: Logging[];
 
   @Column({ nullable: true })
   last_login: Date;

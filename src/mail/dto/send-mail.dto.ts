@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -17,6 +18,11 @@ export class SendMailDto {
   @IsEmail({}, { each: true })
   @ArrayMinSize(1)
   to: string[];
+
+  @ApiProperty()
+  @IsEmail({}, { each: true })
+  @IsOptional()
+  cc: string[];
 
   @ApiProperty()
   @IsString()
