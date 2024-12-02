@@ -63,6 +63,9 @@ export class MailService {
           body: mailOptions.text,
           subject: mailOptions.subject,
           recipients: [...new Set([...dto.to, ...dto.cc])],
+          send_time: new Date().toISOString(),
+          user_id: dto.user_id,
+          total_recipients: [...dto.to, ...dto.cc].length,
         }),
       );
       return result.status >= 200 && result.status < 300

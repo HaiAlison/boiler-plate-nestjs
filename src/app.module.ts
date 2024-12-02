@@ -17,6 +17,7 @@ import { MailModule } from './mail/mail.module';
 import { SenderModule } from './sender/sender.module';
 import { RedisStorageModule } from './redis-storage/redis-storage.module';
 import { UploadModule } from './upload/upload.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { UploadModule } from './upload/upload.module';
     MailModule,
     SenderModule,
     UploadModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [

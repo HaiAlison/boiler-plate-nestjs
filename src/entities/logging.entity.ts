@@ -25,7 +25,7 @@ export class Logging extends BaseTimeStampEntity {
   send_time: string;
 
   @Column({ nullable: true })
-  total_recipients: string;
+  total_recipients: number;
 
   @Column('simple-array', { nullable: true })
   recipients: string[];
