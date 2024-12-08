@@ -1,0 +1,24 @@
+{
+  "SUCCESS": "$t(object.{property}) thành công",
+  "FAILED": "$t(object.{property}) thất bại",
+  "CREATE": {
+    "SUCCESS": "Tạo thành công $t(object.{property})",
+    "ERROR": "Lỗi khi tạo $t(object.{property}): {{error}}",
+    "FAILED": "Tạo $t(object.{property}) thất bại"
+  },
+  "UPDATE": {
+    "SUCCESS": "Cập nhật thành công $t(object.{property})",
+    "ERROR": "Lỗi khi cập nhật $t(object.{property}): {{error}}",
+    "FAILED": "Cập nhật $t(object.{property}) thất bại"
+  },
+  "DELETE": {
+    "SUCCESS": "Xóa thành công $t(object.{property})",
+    "ERROR": "Lỗi khi xóa $t(object.{property}): {{error}}",
+    "FAILED": "Xóa $t(object.{property}) thất bại"
+  },
+  "CANCEL": {
+    "SUCCESS": "Hủy thành công $t(object.{property})",
+    "ERROR": "Lỗi khi hủy $t(object.{property}): {{error}}",
+    "FAILED": "Hủy $t(object.{property}) thất bại"
+  }
+}
