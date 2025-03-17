@@ -3,7 +3,7 @@ import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { User } from './user.entity';
 @Entity()
 @Unique('FK_sender_email_user', ['email', 'user'])
-export class Sender extends BaseTimeStampEntity {
+export class Recipient extends BaseTimeStampEntity {
   @Column({ nullable: true })
   first_name: string;
 
@@ -16,7 +16,7 @@ export class Sender extends BaseTimeStampEntity {
   @Column({ nullable: true })
   avatar: string;
 
-  @ManyToOne(() => User, (user) => user.senders)
+  @ManyToOne(() => User, (user) => user.recipients)
   @JoinColumn({
     name: 'user_id',
   })

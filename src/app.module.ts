@@ -14,10 +14,11 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
 import { MailModule } from './mail/mail.module';
-import { SenderModule } from './sender/sender.module';
+import { RecipientModule } from './recipient/recipientModule';
 import { RedisStorageModule } from './redis-storage/redis-storage.module';
 import { UploadModule } from './upload/upload.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ImportsModule } from './imports/imports.module';
 
 @Module({
   imports: [
@@ -50,9 +51,10 @@ import { DashboardModule } from './dashboard/dashboard.module';
     DynamicConnectionModule,
     AuthModule,
     MailModule,
-    SenderModule,
+    RecipientModule,
     UploadModule,
     DashboardModule,
+    ImportsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,47 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { Sender } from '../entities/sender.entity';
+import { Recipient } from '../entities/recipient.entity';
 import { google } from 'googleapis';
 import { AuthService } from '../auth/auth.service';
 import { handleError, pagination } from '../utils/common/handle';
-import { CreateSenderDto } from './dto/sender.dto';
+import { CreateRecipientDto } from './dto/sender.dto';
 import { CommonDto } from '../utils/common/dto';
 
 @Injectable()
-export class SenderService {
-  constructor(private authService: AuthService) {
-  }
+export class RecipientService {
+  constructor(private authService: AuthService) {}
 
-  async createSender(dto: CreateSenderDto, user_id: string) {
+  async createRecipient(dto: CreateRecipientDto, user_id: string) {
     try {
       const { email, first_name, last_name } = dto;
-      const sender = Sender.create({
+      const recipient = Recipient.create({
         user_id: user_id,
         email: email,
         last_name: last_name,
         first_name: first_name,
       });
-      return await sender.save();
+      return await recipient.save();
     } catch (e) {
       handleError(e);
     }
   }
 
-  async getSenders(user_id: string, dto: CommonDto) {
-    const query = Sender.createQueryBuilder('sender').where(
-      'sender.user_id = :user_id',
+  async getRecipients(user_id: string, dto: CommonDto) {
+    const query = Recipient.createQueryBuilder('recipient').where(
+      'recipient.user_id = :user_id',
       { user_id: user_id },
     );
     return pagination(query, { limit: dto.limit, offset: dto.offset });
   }
 
-  async deleteSender(id: string) {
+  async deleteRecipient(id: string) {
     try {
-      const sender = await Sender.findOne({ where: { id } });
-      if (!sender) {
-        throw new Error('Sender not found');
+      const recipient = await Recipient.findOne({ where: { id } });
+      if (!recipient) {
+        throw new Error('Recipient not found');
       }
-      await sender.remove();
-      return { email: sender.email };
+      await recipient.remove();
+      return { email: recipient.email };
     } catch (e) {
       handleError(e);
     }

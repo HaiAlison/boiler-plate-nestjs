@@ -26,6 +26,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: any,
   ) {
     const token = await this.authService.signIn(req.user);
-    return res.redirect(`http://localhost:3003/auth/redirect?token=${token}`);
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/auth/redirect?token=${token}`,
+    );
   }
 }

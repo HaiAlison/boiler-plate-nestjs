@@ -9,7 +9,7 @@ import {
 import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { Notification } from './notification.entity';
 import * as bcrypt from 'bcrypt';
-import { Sender } from './sender.entity';
+import { Recipient } from './recipient.entity';
 import { Upload } from './Upload.entity';
 import { Logging } from './logging.entity';
 
@@ -54,8 +54,8 @@ export class User extends BaseTimeStampEntity {
   @OneToMany(() => Notification, (notifications) => notifications.user)
   notifications: Notification[];
 
-  @OneToMany(() => Sender, (sender) => sender.user)
-  senders: Sender[];
+  @OneToMany(() => Recipient, (recipient) => recipient.user)
+  recipients: Recipient[];
 
   @OneToMany(() => Upload, (file) => file.user)
   files: Upload[];
