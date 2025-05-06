@@ -6,7 +6,7 @@ export class GenerateCode1746555582433 implements MigrationInterface {
     
 CREATE TABLE IF NOT EXISTS public.code_sequence
 (
-    id serial Primary key,
+    id serial NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now(),
     deleted_at timestamp with time zone,
