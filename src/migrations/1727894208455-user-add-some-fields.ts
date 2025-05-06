@@ -12,11 +12,9 @@ export class UserAddSomeFields1727894208455 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "UQ_03b7539407e80162747960901ac" UNIQUE ("fb_provider_id")`);
         await queryRunner.query(`ALTER TABLE "user" ADD "google_provider_id" character varying`);
         await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "UQ_f78a062b8c881f271ad5523ac8b" UNIQUE ("google_provider_id")`);
-        await queryRunner.query(`ALTER TABLE "user" ADD "avatar" character varying`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "avatar"`);
         await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "UQ_f78a062b8c881f271ad5523ac8b"`);
         await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "google_provider_id"`);
         await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "UQ_03b7539407e80162747960901ac"`);
