@@ -1,6 +1,5 @@
 import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
 import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
-import * as bcrypt from 'bcrypt';
 
 @Entity({ database: 'primary_database' })
 @Unique(['port', 'host'])

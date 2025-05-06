@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Upload } from '../entities/Upload.entity';
+import { Upload } from '../entities/upload.entity';
 import { handleError, pagination } from '../utils/common/handle';
 import { CommonDto } from '../utils/common/dto';
 

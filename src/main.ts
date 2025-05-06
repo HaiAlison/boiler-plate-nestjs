@@ -8,6 +8,9 @@ import * as bodyParser from 'body-parser';
 import { json, urlencoded } from 'express';
 import * as express from 'express';
 import * as path from 'node:path';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

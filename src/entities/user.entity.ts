@@ -8,10 +8,10 @@ import {
 } from 'typeorm';
 import { BaseTimeStampEntity } from '../utils/config/database/base-entity';
 import { Notification } from './notification.entity';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Recipient } from './recipient.entity';
-import { Upload } from './Upload.entity';
 import { Logging } from './logging.entity';
+import { Upload } from './upload.entity';
 
 @Entity()
 @Unique(['code', 'source'])
