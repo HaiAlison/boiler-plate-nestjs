@@ -4,7 +4,7 @@ import { MailController } from './mail.controller';
 import { RedisStorageModule } from '../redis-storage/redis-storage.module';
 
 @Module({
-  imports: [RedisStorageModule],
+  // imports: [RedisStorageModule],
   controllers: [MailController],
   providers: [MailService],
 })

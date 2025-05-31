@@ -15,8 +15,8 @@ import { TemplateDto } from './dto/template.dto';
 @Injectable()
 export class MailService {
   constructor(
-    private redisStorage: RedisStorageService,
-    private schedulerRegistry: SchedulerRegistry,
+    // private redisStorage: RedisStorageService,
+    // private schedulerRegistry: SchedulerRegistry,
   ) {}
 
   async sendMail(dto: SendMailDto) {
@@ -79,30 +79,30 @@ export class MailService {
     }
   }
 
-  async scheduleEmail(dto: CronJobDto, user_id?: string) {
-    const { hour, minute } = dto;
-
-    await this.redisStorage.set('cron_time', `${hour}_${minute}`);
-    const job = new CronJob(
-      `${minute} ${hour} * * *`,
-      async () => {
-        console.log(`job report running at ${hour}:${minute}!`);
-        //TODO send email
-      },
-      null,
-      null,
-      'Asia/Ho_Chi_Minh',
-    );
-    try {
-      this.schedulerRegistry.addCronJob(`mail_schedule_${user_id}`, job);
-    } catch (e) {}
-    console.log(
-      `job report added for each ${hour}:${minute
-        .toString()
-        .padStart(2, '0')} !`,
-    );
-    job.start();
-  }
+  // async scheduleEmail(dto: CronJobDto, user_id?: string) {
+  //   const { hour, minute } = dto;
+  //
+  //   await this.redisStorage.set('cron_time', `${hour}_${minute}`);
+  //   const job = new CronJob(
+  //     `${minute} ${hour} * * *`,
+  //     async () => {
+  //       console.log(`job report running at ${hour}:${minute}!`);
+  //       //TODO send email
+  //     },
+  //     null,
+  //     null,
+  //     'Asia/Ho_Chi_Minh',
+  //   );
+  //   try {
+  //     this.schedulerRegistry.addCronJob(`mail_schedule_${user_id}`, job);
+  //   } catch (e) {}
+  //   console.log(
+  //     `job report added for each ${hour}:${minute
+  //       .toString()
+  //       .padStart(2, '0')} !`,
+  //   );
+  //   job.start();
+  // }
 
   async getSentList(dto: CommonDto, user_id: string) {
     try {

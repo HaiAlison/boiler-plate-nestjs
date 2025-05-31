@@ -1,8 +1,9 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class GenerateCode1746555582433 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
+export class GenerateCode1748689754375 implements MigrationInterface {
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`
     
 CREATE TABLE IF NOT EXISTS public.code_sequence
 (
@@ -16,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.code_sequence
     CONSTRAINT "UQ_379cade254749a491772f6d8aad" UNIQUE (code)
 )
     `);
-    await queryRunner.query(`
+        await queryRunner.query(`
         -- FUNCTION: public.generate_code(text, integer, text)
 
 -- DROP FUNCTION IF EXISTS public.generate_code(text, integer, text);
@@ -61,7 +62,9 @@ $BODY$;
 ALTER FUNCTION public.generate_code(text, integer, text)
     OWNER TO postgres;
 `);
-  }
+    }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+    public async down(queryRunner: QueryRunner): Promise<void> {
+    }
+
 }

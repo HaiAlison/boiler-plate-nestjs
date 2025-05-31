@@ -16,11 +16,11 @@ export class MailController {
     return this.mailService.sendMail(dto);
   }
 
-  @Post('set-time')
-  @UseGuards(JwtAuthGuard)
-  addCronJob(@Body() cronDto: CronJobDto, @GetUser() user_id: string) {
-    return this.mailService.scheduleEmail(cronDto, user_id);
-  }
+  // @Post('set-time')
+  // @UseGuards(JwtAuthGuard)
+  // addCronJob(@Body() cronDto: CronJobDto, @GetUser() user_id: string) {
+  //   return this.mailService.scheduleEmail(cronDto, user_id);
+  // }
 
   @Get('sent')
   @UseGuards(JwtAuthGuard)

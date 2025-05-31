@@ -25,30 +25,30 @@ import { ImportsModule } from './imports/imports.module';
     ConfigModule.forRoot({ envFilePath: ['.env'], isGlobal: true }),
     ConfigModule,
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
-    TypeOrmModule.forRootAsync(typeOrmMapConfig),
-    MapModule,
-    ScheduleModule.forRoot(),
+    // TypeOrmModule.forRootAsync(typeOrmMapConfig),
+    // MapModule,
+    // ScheduleModule.forRoot(),
     // ...connections.map((connection) => {
     //   return TypeOrmModule.forRoot(connection);
     // }),
-    MongooseModule.forRoot(
-      `mongodb://${process.env.MONGO_DB_HOST}:${process.env.MONGO_DB_PORT}/${process.env.MONGO_DB_NAME}
-      ?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000`,
-      {
-        connectionFactory: (connection) => {
-          console.log('Starting MongoDB connection...'); // Log at the start
-          connection.on('connected', () => {
-            // console.log('Connected to MongoDB');
-          });
-          connection._events.connected();
-          return connection;
-        },
-      },
-    ),
-    ScheduleModule.forRoot(),
-    RedisStorageModule,
+    // MongooseModule.forRoot(
+    //   `mongodb://${process.env.MONGO_DB_HOST}:${process.env.MONGO_DB_PORT}/${process.env.MONGO_DB_NAME}
+    //   ?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000`,
+    //   {
+    //     connectionFactory: (connection) => {
+    //       console.log('Starting MongoDB connection...'); // Log at the start
+    //       connection.on('connected', () => {
+    //         // console.log('Connected to MongoDB');
+    //       });
+    //       connection._events.connected();
+    //       return connection;
+    //     },
+    //   },
+    // ),
+    // ScheduleModule.forRoot(),
+    // RedisStorageModule,
     UserModule,
-    DynamicConnectionModule,
+    // DynamicConnectionModule,
     AuthModule,
     MailModule,
     RecipientModule,
