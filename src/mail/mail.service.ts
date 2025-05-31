@@ -2,12 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { google } from 'googleapis';
 import { User } from '../entities/user.entity';
 import { SendMailDto } from './dto/send-mail.dto';
-import { handleError } from '../utils/common/handle';
+import { handleError, pagination } from '../utils/common/handle';
 import { CronJobDto } from './dto/cron-job.dto';
 import { CronJob } from 'cron';
 import { RedisStorageService } from '../redis-storage/redis-storage.service';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { Logging } from '../entities/logging.entity';
+import { CommonDto } from '../utils/common/dto';
+import { TemplateEntity } from '../entities/template.entity';
+import { TemplateDto } from './dto/template.dto';
 
 @Injectable()
 export class MailService {
@@ -99,5 +102,31 @@ export class MailService {
         .padStart(2, '0')} !`,
     );
     job.start();
+  }
+
+  async getSentList(dto: CommonDto, user_id: string) {
+    try {
+      const query = Logging.createQueryBuilder('logging')
+        .where('logging.user_id = :user_id', { user_id })
+        .orderBy('logging.send_time', 'DESC');
+      return pagination(query, dto);
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  async createTemplate(dto: TemplateDto, user_id: string) {
+    try {
+      const template = TemplateEntity.create({
+        user_id,
+        name: dto.name,
+        subject: dto.subject,
+        body: dto.text,
+      });
+      await TemplateEntity.save(template);
+      return { message: 'Template created successfully', template };
+    } catch (error) {
+      handleError(error);
+    }
   }
 }
