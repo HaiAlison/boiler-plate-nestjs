@@ -10,6 +10,7 @@ import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection
 import { ScheduleModule } from '@nestjs/schedule';
 import { typeOrmMapConfig } from './utils/config/database/map.data-source';
 import { MapModule } from './map/map.module';
+import { StreamModule } from './stream/stream.module';
 
 @Module({
   imports: [
@@ -22,22 +23,29 @@ import { MapModule } from './map/map.module';
     // ...connections.map((connection) => {
     //   return TypeOrmModule.forRoot(connection);
     // }),
-    MongooseModule.forRoot(
-      `mongodb://${process.env.MONGO_DB_HOST}:${process.env.MONGO_DB_PORT}/${process.env.MONGO_DB_NAME}
-      ?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000`,
-      {
-        connectionFactory: (connection) => {
-          console.log('Starting MongoDB connection...'); // Log at the start
-          connection.on('connected', () => {
-            // console.log('Connected to MongoDB');
-          });
-          connection._events.connected();
-          return connection;
-        },
-      },
-    ),
+    // MongooseModule.forRootAsync({
+    //   useFactory: async () => {
+    //     try {
+    //       return {
+    //         uri: `mongodb://${process.env.MONGO_DB_HOST}:${process.env.MONGO_DB_PORT}/${process.env.MONGO_DB_NAME}?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000`,
+    //         connectionFactory: (connection) => {
+    //           console.log('Starting MongoDB connection...');
+    //           connection.on('connected', () => {
+    //             // Connected to MongoDB
+    //           });
+    //           return connection;
+    //         },
+    //       };
+    //     } catch (error) {
+    //       console.error('MongoDB connection failed:', error);
+    //       // Return empty config to ignore connection
+    //       return {};
+    //     }
+    //   },
+    // }),
     UserModule,
     DynamicConnectionModule,
+    StreamModule,
   ],
   controllers: [AppController],
   providers: [AppService],

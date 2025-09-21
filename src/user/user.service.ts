@@ -26,7 +26,7 @@ export class UserService {
       if (dbName) {
         connection = await this.dynamicDbService.createConnection(dbName);
       }
-      const repository = await connection.manager.getRepository(User);
+      const repository = connection.manager.getRepository(User);
       return repository.find();
     } catch (e) {
       return handleError(e);

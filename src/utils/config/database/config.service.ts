@@ -19,7 +19,7 @@ export const dbConfig = {
   password: config.get<string>('DATABASE_PASS'),
   entities: ['dist/**/*.entity.{ts,js}'],
   migrations: ['dist/migrations/*.{ts,js}'],
-  migrationsRun: true,
+  migrationsRun: config.get('NODE_ENV') == 'production',
   migrationsTableName: 'typeorm_migrations',
   synchronize: false,
   ssl: config.get('SSL_MODE', false),

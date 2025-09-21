@@ -18,7 +18,7 @@ const dbConfig = {
   username: config.get<string>('DATABASE_MAP_USER'),
   password: config.get<string>('DATABASE_MAP_PASS'),
   migrations: ['dist/map/migrations/*.{ts,js}'],
-  migrationsRun: true,
+  migrationsRun: config.get('NODE_ENV') == 'production',
   migrationsTableName: 'typeorm_migrations',
   synchronize: false,
   ssl: config.get('MAP_SSL_MODE', false),

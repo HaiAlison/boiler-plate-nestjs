@@ -78,7 +78,7 @@ export class DynamicConnectionService {
       ...config,
       entities: ['dist/**/*.entity.{ts,js}'],
       migrations: ['dist/migrations/*.{ts,js}'],
-      migrationsRun: true,
+      migrationsRun: process.env.NODE_ENV == 'production',
       migrationsTableName: 'typeorm_migrations',
       synchronize: false,
       ssl: false,

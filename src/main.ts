@@ -12,6 +12,11 @@ async function bootstrap() {
   const config: ConfigService = app.get(ConfigService);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
+  });
   const conf = new DocumentBuilder()
     .setTitle('Boiler plate swagger')
     .setDescription('The Warehouse API description')
