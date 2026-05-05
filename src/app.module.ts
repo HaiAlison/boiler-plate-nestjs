@@ -4,6 +4,10 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { typeOrmAsyncConfig } from './utils/config/database/config.service';
+import { RedisModule } from './utils/redis/redis.module';
+import { RedisLockModule } from './utils/redis-lock/redis-lock.module';
+import { join } from 'path';
+import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection.module';
@@ -16,6 +20,16 @@ import { MapModule } from './map/map.module';
     ConfigModule.forRoot({ envFilePath: ['.env'], isGlobal: true }),
     ConfigModule,
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
+    RedisModule,
+    RedisLockModule,
+    I18nModule.forRoot({
+      fallbackLanguage: process.env.DEFAULT_LANGUAGE,
+      loaderOptions: {
+        path: join(__dirname, 'utils/i18n/'),
+        watch: true,
+      },
+      resolvers: [new HeaderResolver(['x-language'])],
+    }),
     TypeOrmModule.forRootAsync(typeOrmMapConfig),
     MapModule,
     ScheduleModule.forRoot(),

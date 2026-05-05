@@ -1,0 +1,22 @@
+{
+  "SUCCESS": "$t(objects.{property}) successfully",
+  "FAILED": "Failed to $t(objects.{property})",
+  "CREATE": {
+    "SUCCESS": "Created $t(objects.{property})",
+    "ERROR": "Error creating $t(objects.{property}): {{error}}",
+    "FAILED": "Failed to create $t(objects.{property})"
+  },
+  "UPDATE": {
+    "SUCCESS": "Updated $t(objects.{property})",
+    "ERROR": "Error updating $t(objects.{property}): {{error}}"
+  },
+  "DELETE": {
+    "SUCCESS": "Deleted $t(objects.{property})",
+    "ERROR": "Error deleting $t(objects.{property}): {{error}}"
+  },
+  "CANCEL": {
+    "SUCCESS": "Cancelled $t(objects.{property})",
+    "ERROR": "Error cancelling $t(objects.{property}): {{error}}",
+    "FAILED": "Failed to cancel $t(objects.{property})"
+  }
+}
