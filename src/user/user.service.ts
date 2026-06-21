@@ -12,7 +12,7 @@ export class UserService {
     private dynamicDbService: DynamicConnectionService,
     @InjectDataSource()
     private dataSource: DataSource,
-  ) {}
+  ) { }
   i = 0;
   sleep(ms) {
     return new Promise((resolve) => {
@@ -33,13 +33,16 @@ export class UserService {
     }
   }
 
-  async createUser(dto, connection: DataSource) {
+  async createUser(dto, connection?: DataSource) {
     const { code, name, address, dbName } = dto;
     console.log('count ', ++this.i);
+    if (!connection) {
+      connection = this.dataSource;
+    }
+    let user = await connection.manager.findOne(User, {
+      where: { code },
+    });
     await connection.transaction(async (transactionalEntityManager) => {
-      let user = await transactionalEntityManager.findOne(User, {
-        where: { code },
-      });
       const payload = {
         name,
         address,
@@ -56,6 +59,7 @@ export class UserService {
       }
       await transactionalEntityManager.save<User>(user);
     });
+    return user;
   }
   // @Cron('15 * * * * *')
   async createMultipleUsers() {

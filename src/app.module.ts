@@ -14,6 +14,8 @@ import { DynamicConnectionModule } from './dynamic-connection/dynamic-connection
 import { ScheduleModule } from '@nestjs/schedule';
 import { typeOrmMapConfig } from './utils/config/database/map.data-source';
 import { MapModule } from './map/map.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -50,10 +52,18 @@ import { MapModule } from './map/map.module';
         },
       },
     ),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useFactory: async () => ({
+        autoSchemaFile: true,
+        graphiql: true,
+      })
+
+    }),
     UserModule,
     DynamicConnectionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

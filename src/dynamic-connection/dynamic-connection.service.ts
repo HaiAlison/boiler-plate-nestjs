@@ -10,14 +10,14 @@ export class DynamicConnectionService {
   constructor(
     @InjectDataSource()
     private dataSource: DataSource,
-  ) {}
+  ) { }
   private publicKey = process.env.PUBLIC_KEY;
   private privateKey = process.env.PRIVATE_KEY;
   async addDatabaseConfig(config: CreateDynamicConnectionDto) {
     try {
       const { database, port, name, host, password, username, type } = config;
       const query = this.dataSource.manager;
-      const db = query.create<Database>(Database, {
+      const db = query.create(Database, {
         database,
         port,
         name,
