@@ -1,14 +1,23 @@
 import {
   BaseEntity,
+  BeforeInsert,
   CreateDateColumn,
   DeleteDateColumn,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v7 as uuidv7 } from 'uuid';
 
 export class BaseTimeStampEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('uuid')
   id: string;
+
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) {
+      this.id = uuidv7();
+    }
+  }
 
   @CreateDateColumn({ type: 'timestamptz', select: false })
   created_at: Date;
